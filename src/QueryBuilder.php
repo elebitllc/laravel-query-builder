@@ -37,7 +37,7 @@ class QueryBuilder implements ArrayAccess
      * @param \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation $subject
      * @param null|\Illuminate\Http\Request $request
      */
-    public function __construct($subject, ?Request $request = null, ?String $prefix = null)
+    public function __construct($subject, ?Request $request = null, String|null $prefix = null)
     {
         $this->initializeSubject($subject)
             ->initializePrefix($prefix)
@@ -70,7 +70,7 @@ class QueryBuilder implements ArrayAccess
         return $this;
     }
 
-    protected function initializePrefix(String $prefix): static
+    protected function initializePrefix(String|null $prefix): static
     {
         $this->prefix = $prefix;
         return $this;

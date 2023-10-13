@@ -32,7 +32,7 @@ class QueryBuilderRequest extends Request
         return static::createFrom($request, new static());
     }
 
-    public function includes(?String $prefix = null): Collection
+    public function includes(String|null $prefix = null): Collection
     {
         $includeParameterName = (!is_null($prefix) ? $prefix.'_' : '') . config('query-builder.parameters.include', 'include');
 
@@ -45,7 +45,7 @@ class QueryBuilderRequest extends Request
         return collect($includeParts)->filter();
     }
 
-    public function appends(?String $prefix = null): Collection
+    public function appends(String|null $prefix = null): Collection
     {
         $appendParameterName = (!is_null($prefix) ? $prefix.'_' : '') . config('query-builder.parameters.append', 'append');
 
@@ -58,7 +58,7 @@ class QueryBuilderRequest extends Request
         return collect($appendParts)->filter();
     }
 
-    public function fields(?String $prefix = null): Collection
+    public function fields(String|null $prefix = null): Collection
     {
         $fieldsParameterName = (!is_null($prefix) ? $prefix.'_' : '') . config('query-builder.parameters.fields', 'fields');
         $fieldsData = $this->getRequestData($fieldsParameterName);
@@ -93,7 +93,7 @@ class QueryBuilderRequest extends Request
         return collect($fields);
     }
 
-    public function sorts(?String $prefix = null): Collection
+    public function sorts(String|null $prefix = null): Collection
     {
         $sortParameterName = (!is_null($prefix) ? $prefix.'_' : '') . config('query-builder.parameters.sort', 'sort');
 
@@ -106,7 +106,7 @@ class QueryBuilderRequest extends Request
         return collect($sortParts)->filter();
     }
 
-    public function filters(?String $prefix = null): Collection
+    public function filters(String|null $prefix = null): Collection
     {
         $filterParameterName = (!is_null($prefix) ? $prefix.'_' : '') . config('query-builder.parameters.filter', 'filter');
 
