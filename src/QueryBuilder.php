@@ -105,7 +105,7 @@ class QueryBuilder implements ArrayAccess
      *
      * @return static
      */
-    public static function for($subject, ?Request $request = null, ?String $prefix = null): static
+    public static function for($subject, ?Request $request = null, String|null $prefix = null): static
     {
         if (is_subclass_of($subject, Model::class)) {
             $subject = $subject::query();
