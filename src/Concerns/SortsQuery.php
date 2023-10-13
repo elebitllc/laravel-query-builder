@@ -46,7 +46,7 @@ trait SortsQuery
      */
     public function defaultSorts($sorts): static
     {
-        if ($this->request->sorts()->isNotEmpty()) {
+        if ($this->request->sorts($this->prefix)->isNotEmpty()) {
             // We've got requested sorts. No need to parse defaults.
 
             return $this;
@@ -71,7 +71,7 @@ trait SortsQuery
 
     protected function addRequestedSortsToQuery()
     {
-        $this->request->sorts()
+        $this->request->sorts($this->prefix)
             ->each(function (string $property) {
                 $descending = $property[0] === '-';
 
@@ -97,7 +97,7 @@ trait SortsQuery
             return;
         }
 
-        $requestedSortNames = $this->request->sorts()->map(function (string $sort) {
+        $requestedSortNames = $this->request->sorts($this->prefix)->map(function (string $sort) {
             return ltrim($sort, '-');
         });
 

@@ -33,7 +33,7 @@ trait FiltersQuery
     {
         $this->allowedFilters->each(function (AllowedFilter $filter) {
             if ($this->isFilterRequested($filter)) {
-                $value = $this->request->filters()->get($filter->getName());
+                $value = $this->request->filters($this->prefix)->get($filter->getName());
                 $filter->filter($this, $value);
 
                 return;
@@ -57,7 +57,7 @@ trait FiltersQuery
 
     protected function isFilterRequested(AllowedFilter $allowedFilter): bool
     {
-        return $this->request->filters()->has($allowedFilter->getName());
+        return $this->request->filters($this->prefix)->has($allowedFilter->getName());
     }
 
     protected function ensureAllFiltersExist()
@@ -66,7 +66,7 @@ trait FiltersQuery
             return;
         }
 
-        $filterNames = $this->request->filters()->keys();
+        $filterNames = $this->request->filters($this->prefix)->keys();
 
         $allowedFilterNames = $this->allowedFilters->map(function (AllowedFilter $allowedFilter) {
             return $allowedFilter->getName();

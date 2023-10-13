@@ -36,7 +36,7 @@ trait AddsFieldsToQuery
     {
         $modelTableName = $this->getModel()->getTable();
 
-        $fields = $this->request->fields();
+        $fields = $this->request->fields($this->prefix);
 
         $modelFields = $fields->has($modelTableName) ? $fields->get($modelTableName) : $fields->get('_');
 
@@ -53,7 +53,7 @@ trait AddsFieldsToQuery
     {
         $table = Str::plural(Str::snake($relation)); // TODO: make this configurable
 
-        $fields = $this->request->fields()
+        $fields = $this->request->fields($this->prefix)
             ->mapWithKeys(fn ($fields, $table) => [$table => $fields])
             ->get($table);
 
@@ -74,7 +74,7 @@ trait AddsFieldsToQuery
     {
         $modelTable = $this->getModel()->getTable();
 
-        $requestedFields = $this->request->fields()
+        $requestedFields = $this->request->fields($this->prefix)
             ->map(function ($fields, $model) use ($modelTable) {
                 $tableName = $model;
 

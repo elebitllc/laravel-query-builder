@@ -31,13 +31,16 @@ class QueryBuilder implements ArrayAccess
     /** @var \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation */
     protected $subject;
 
+    protected ?String $prefix;
+
     /**
      * @param \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation $subject
      * @param null|\Illuminate\Http\Request $request
      */
-    public function __construct($subject, ?Request $request = null)
+    public function __construct($subject, ?Request $request = null, ?String $prefix = null)
     {
         $this->initializeSubject($subject)
+            ->initializePrefix($prefix)
             ->initializeRequest($request ?? app(Request::class));
     }
 
@@ -67,6 +70,12 @@ class QueryBuilder implements ArrayAccess
         return $this;
     }
 
+    protected function initializePrefix(String $prefix): static
+    {
+        $this->prefix = $prefix;
+        return $this;
+    }
+
     public function getEloquentBuilder(): EloquentBuilder
     {
         if ($this->subject instanceof EloquentBuilder) {
@@ -85,19 +94,24 @@ class QueryBuilder implements ArrayAccess
         return $this->subject;
     }
 
+    public function getPrefix() : ?String
+    {
+        return $this->prefix;
+    }
+
     /**
      * @param EloquentBuilder|Relation|string $subject
      * @param Request|null $request
      *
      * @return static
      */
-    public static function for($subject, ?Request $request = null): static
+    public static function for($subject, ?Request $request = null, ?String $prefix = null): static
     {
         if (is_subclass_of($subject, Model::class)) {
             $subject = $subject::query();
         }
 
-        return new static($subject, $request);
+        return new static($subject, $request, $prefix);
     }
 
     public function __call($name, $arguments)
