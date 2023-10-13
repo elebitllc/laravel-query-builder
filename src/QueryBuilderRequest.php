@@ -32,9 +32,9 @@ class QueryBuilderRequest extends Request
         return static::createFrom($request, new static());
     }
 
-    public function includes(): Collection
+    public function includes(String|null $prefix = null): Collection
     {
-        $includeParameterName = config('query-builder.parameters.include', 'include');
+        $includeParameterName = (!is_null($prefix) ? $prefix.'_' : '') . config('query-builder.parameters.include', 'include');
 
         $includeParts = $this->getRequestData($includeParameterName);
 
@@ -45,9 +45,9 @@ class QueryBuilderRequest extends Request
         return collect($includeParts)->filter();
     }
 
-    public function appends(): Collection
+    public function appends(String|null $prefix = null): Collection
     {
-        $appendParameterName = config('query-builder.parameters.append', 'append');
+        $appendParameterName = (!is_null($prefix) ? $prefix.'_' : '') . config('query-builder.parameters.append', 'append');
 
         $appendParts = $this->getRequestData($appendParameterName);
 
@@ -58,9 +58,9 @@ class QueryBuilderRequest extends Request
         return collect($appendParts)->filter();
     }
 
-    public function fields(): Collection
+    public function fields(String|null $prefix = null): Collection
     {
-        $fieldsParameterName = config('query-builder.parameters.fields', 'fields');
+        $fieldsParameterName = (!is_null($prefix) ? $prefix.'_' : '') . config('query-builder.parameters.fields', 'fields');
         $fieldsData = $this->getRequestData($fieldsParameterName);
 
         $fieldsPerTable = collect(is_string($fieldsData) ? explode(static::getFieldsArrayValueDelimiter(), $fieldsData) : $fieldsData);
@@ -93,9 +93,9 @@ class QueryBuilderRequest extends Request
         return collect($fields);
     }
 
-    public function sorts(): Collection
+    public function sorts(String|null $prefix = null): Collection
     {
-        $sortParameterName = config('query-builder.parameters.sort', 'sort');
+        $sortParameterName = (!is_null($prefix) ? $prefix.'_' : '') . config('query-builder.parameters.sort', 'sort');
 
         $sortParts = $this->getRequestData($sortParameterName);
 
@@ -106,9 +106,9 @@ class QueryBuilderRequest extends Request
         return collect($sortParts)->filter();
     }
 
-    public function filters(): Collection
+    public function filters(String|null $prefix = null): Collection
     {
-        $filterParameterName = config('query-builder.parameters.filter', 'filter');
+        $filterParameterName = (!is_null($prefix) ? $prefix.'_' : '') . config('query-builder.parameters.filter', 'filter');
 
         $filterParts = $this->getRequestData($filterParameterName, []);
 

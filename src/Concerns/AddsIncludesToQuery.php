@@ -45,7 +45,7 @@ trait AddsIncludesToQuery
 
         $this->ensureAllIncludesExist();
 
-        $this->addIncludesToQuery($this->request->includes());
+        $this->addIncludesToQuery($this->request->includes($this->prefix));
 
         return $this;
     }
@@ -69,7 +69,7 @@ trait AddsIncludesToQuery
 
     protected function ensureAllIncludesExist()
     {
-        $includes = $this->request->includes();
+        $includes = $this->request->includes($this->prefix);
 
         $allowedIncludeNames = $this->allowedIncludes->map(function (AllowedInclude $allowedInclude) {
             return $allowedInclude->getName();
